@@ -1,8 +1,12 @@
 # ClaudeStat
 
-**A lightweight macOS floating window that displays your real-time Claude Code usage.**
+**One floating window. Every Claude client. All your usage at a glance.**
 
-**一个轻量的 macOS 悬浮窗，实时显示你的 Claude Code 用量。**
+Whether you're chatting on Claude.ai, collaborating in Claude for Work, or running Claude Code in the terminal — your 5-hour session and 7-day usage limits are always visible, always current, floating quietly above whatever you're working on.
+
+**一个悬浮窗，掌握所有 Claude 用量。**
+
+无论你在用网页版 Chat、桌面版 Claude for Work，还是终端里的 Claude Code——5小时会话用量和7日累计用量始终悬浮在屏幕一角，实时可见，从不打扰。
 
 <img src="screenshot.png" width="160" alt="ClaudeStat collapsed"> <img src="screenshot-expanded.png" width="160" alt="ClaudeStat expanded">
 
