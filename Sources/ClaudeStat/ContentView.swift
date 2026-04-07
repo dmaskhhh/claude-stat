@@ -109,7 +109,7 @@ struct HUDView: View {
                 MiniCard(icon: "bubble.left.fill", label: "Msgs",     value: fmt(s.messages),  color: .blue)
                 MiniCard(icon: "hammer.fill",      label: "Tools",    value: fmt(s.toolCalls), color: .orange)
                 MiniCard(icon: "bolt.fill",        label: "Tokens",   value: fmtTok(s.tokens), color: .purple)
-                MiniCard(icon: "terminal.fill",    label: "Sessions", value: "\(s.sessions)",  color: .teal)
+                MiniCard(icon: "terminal.fill",    label: "Session",  value: "\(s.sessions)",  color: .teal)
             }
             .padding(.horizontal, 7).padding(.bottom, 6)
 

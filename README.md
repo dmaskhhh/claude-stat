@@ -4,7 +4,7 @@
 
 **一个轻量的 macOS 悬浮窗，实时显示你的 Claude Code 用量。**
 
-![ClaudeStat screenshot](screenshot.png)
+<img src="screenshot.png" width="160" alt="ClaudeStat collapsed"> <img src="screenshot-expanded.png" width="160" alt="ClaudeStat expanded">
 
 ---
 
