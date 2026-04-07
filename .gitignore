@@ -3,4 +3,5 @@
 *.o
 *.d
 *.app
+*.dmg
 .DS_Store
