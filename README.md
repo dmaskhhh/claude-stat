@@ -29,14 +29,20 @@ Whether you're chatting on Claude.ai, collaborating in Claude for Work, or runni
 
 ## How It Works / 工作原理
 
-ClaudeStat reads two files written by Claude Code:
+ClaudeStat reads two files written by Claude Code, or fetches directly from claude.ai as a fallback:
 
-ClaudeStat 读取 Claude Code 写入的两个文件：
+ClaudeStat 读取 Claude Code 写入的文件，或作为 fallback 直接从 claude.ai 获取：
 
-| File | Content | Update frequency |
-|------|---------|-----------------|
-| `~/.claude/hud-cache.json` | Rate limit percentages, reset times | Every response (real-time) |
-| `~/.claude/stats-cache.json` | Daily messages, tokens, sessions | End of each session |
+| Source | File | Content | Update frequency |
+|------|------|---------|-----------------|
+| **Claude Code** | `~/.claude/hud-cache.json` | Rate limit percentages, reset times | Every response (real-time) |
+| **Claude.ai API** | N/A (via script) | Real-time usage data | Every 60s (fallback) |
+| **Claude Code** | `~/.claude/stats-cache.json` | Daily messages, tokens, sessions | End of each session |
+
+### Why the fallback? / 为什么需要 Fallback？
+The Claude Code statusline hook only updates when you are actively using the CLI. If you use the desktop app or web interface, the HUD data might become stale. The new real-time fetch script ensures your HUD is always accurate, matching the "Usage" section in your Claude settings.
+
+Claude Code 的 statusline hook 仅在你使用 CLI 时更新。如果你使用桌面版或网页版，HUD 数据可能会过期。新增的实时拉取脚本确保 HUD 始终准确，与 Claude 设置中的 Usage 显示一致。
 
 The rate limit data comes from Claude Code's own statusline hook — the same data shown by `/usage`.
 
@@ -48,6 +54,8 @@ The rate limit data comes from Claude Code's own statusline hook — the same da
 
 - macOS 13 (Ventura) or later / macOS 13 或更高版本
 - [Claude Code](https://claude.ai/code) installed and configured / 已安装并配置 Claude Code
+- Google Chrome (for real-time fallback) / Google Chrome（用于实时数据同步）
+- Chrome setting: **View > Developer > Allow JavaScript from Apple Events**
 - Xcode Command Line Tools (`xcode-select --install`)
 
 ---
@@ -96,6 +104,26 @@ open ~/Applications/ClaudeStat.app
 **System Settings → General → Login Items** → click `+` → select `ClaudeStat.app`
 
 **系统设置 → 通用 → 登录项** → 点击 `+` → 选择 `ClaudeStat.app`
+
+### 5. (Optional) Real-time Fallback / (可选) 实时数据同步
+
+To keep the HUD updated when not using Claude Code CLI:
+
+若想在不使用 Claude Code 终端时也保持数据实时更新：
+
+1. **Install fetch script**:
+   ```bash
+   mkdir -p ~/.claude
+   cp scripts/fetch-usage.sh ~/.claude/
+   chmod +x ~/.claude/fetch-usage.sh
+   ```
+2. **Setup LaunchAgent**:
+   Edit `scripts/com.dmaskhhh.claudestat-fetch.plist`, replace `YOUR_USER` with your macOS username, then:
+   ```bash
+   cp scripts/com.dmaskhhh.claudestat-fetch.plist ~/Library/LaunchAgents/
+   launchctl load ~/Library/LaunchAgents/com.dmaskhhh.claudestat-fetch.plist
+   ```
+3. **Chrome Tip**: Keep at least one `claude.ai` tab open in Chrome.
 
 ---
 

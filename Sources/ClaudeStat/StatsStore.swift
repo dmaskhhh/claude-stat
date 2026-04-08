@@ -124,17 +124,24 @@ class StatsStore: ObservableObject {
               let rl    = cache.rateLimits
         else { return }
 
+        let now = Date()
+
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             self.hasLiveData = true
 
             if let w = rl.fiveHour {
-                self.fiveHourPct   = w.usedPercentage ?? 0
-                self.fiveHourReset = w.resetsAt.map { Date(timeIntervalSince1970: $0) }
+                let resetDate = w.resetsAt.map { Date(timeIntervalSince1970: $0) }
+                // If the window has already reset, usage is effectively 0
+                let alreadyReset = resetDate.map { $0 < now } ?? false
+                self.fiveHourPct   = alreadyReset ? 0 : (w.usedPercentage ?? 0)
+                self.fiveHourReset = alreadyReset ? nil : resetDate
             }
             if let w = rl.sevenDay {
-                self.sevenDayPct   = w.usedPercentage ?? 0
-                self.sevenDayReset = w.resetsAt.map { Date(timeIntervalSince1970: $0) }
+                let resetDate = w.resetsAt.map { Date(timeIntervalSince1970: $0) }
+                let alreadyReset = resetDate.map { $0 < now } ?? false
+                self.sevenDayPct   = alreadyReset ? 0 : (w.usedPercentage ?? 0)
+                self.sevenDayReset = alreadyReset ? nil : resetDate
             }
         }
     }
